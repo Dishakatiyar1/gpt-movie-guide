@@ -1,10 +1,14 @@
 import "./App.css";
+import Body from "./components/Body";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl text-green-700">Hello world! App</h1>
-    </div>
+    <>
+      <BrowserRouter>
+        <Body />
+      </BrowserRouter>
+    </>
   );
 }
 
