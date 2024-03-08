@@ -1,11 +1,21 @@
 import React, {useRef, useState} from "react";
 import Header from "./Header";
 import {checkDataValidation} from "../utils/validate";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {auth} from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import {addUser} from "../utils/userSlice";
+import {useDispatch} from "react-redux";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSignInForm, setIsSignInForm] = useState(true);
-  const [isError, setIsError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -16,12 +26,73 @@ const Login = () => {
   const handleButtonClick = e => {
     e.preventDefault();
     // validate the form data
-    const err = checkDataValidation(
+    const errMessage = checkDataValidation(
       email.current?.value,
       password.current?.value
     );
-    console.log(email.current?.value, password.current?.value);
-    setIsError(err);
+    setErrorMessage(errMessage);
+    // if err is there then return don't execute next lines of code
+    if (errMessage) return;
+
+    // sign up user
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current?.value,
+        password.current?.value
+      )
+        .then(userCredential => {
+          // Signed up
+          const user = userCredential.user;
+          navigate("/browse");
+        })
+        .catch(error => {
+          const errorCode = error.code;
+          const errorMsg = error.message;
+          console.log(errorMsg);
+          setErrorMessage(errorCode + "-" + errorMsg);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current?.value,
+        password.current?.value
+      )
+        .then(userCredential => {
+          // Signed in
+          const user = userCredential.user;
+          // after sign in - upadate the profile & dispatch action then navigate
+
+          updateProfile(user, {
+            displayName: name.current?.value,
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              // Profile updated!
+              // auth have updated value
+              const {uid, email, displayName, photoURL} = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+
+              navigate("/browse");
+            })
+            .catch(error => {
+              // An error occurred
+              // ...
+            });
+        })
+        .catch(error => {
+          const errorCode = error.code;
+          const errorMsg = error.message;
+          setErrorMessage(errorCode + " : " + errorMsg);
+        });
+    }
   };
 
   return (
@@ -58,7 +129,7 @@ const Login = () => {
           ref={password}
           className="p-2 my-2 rounded-md outline-none w-full bg-gray-600 text-white"
         />
-        <p className="text-red-700">{isError}</p>
+        <p className="text-red-700">{errorMessage}</p>
         <button
           className="px-6 py-2 mt-4 bg-red-600 text-white rounded-md w-full"
           onClick={handleButtonClick}
