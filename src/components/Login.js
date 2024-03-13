@@ -34,7 +34,7 @@ const Login = () => {
     // if err is there then return don't execute next lines of code
     if (errMessage) return;
 
-    // sign up user
+    // sign up & sign in user
     if (!isSignInForm) {
       createUserWithEmailAndPassword(
         auth,
@@ -44,7 +44,31 @@ const Login = () => {
         .then(userCredential => {
           // Signed up
           const user = userCredential.user;
-          navigate("/browse");
+          updateProfile(user, {
+            displayName: name.current?.value,
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              // Profile updated!
+              // auth have updated value
+              const {uid, email, displayName, photoURL} = user;
+              // update your redux store
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              // then navigate
+              // onAuthStateChange will navigate
+              navigate("/browser");
+            })
+            .catch(error => {
+              // An error occurred
+              console.log("Error while updating profile");
+            });
         })
         .catch(error => {
           const errorCode = error.code;
@@ -60,10 +84,11 @@ const Login = () => {
       )
         .then(userCredential => {
           // Signed in
+          // console.log("user creds", userCredential);
           const user = userCredential.user;
           // after sign in - upadate the profile & dispatch action then navigate
 
-          updateProfile(user, {
+          updateProfile(auth.currentUser, {
             displayName: name.current?.value,
             photoURL: "https://example.com/jane-q-user/profile.jpg",
           })
@@ -71,6 +96,7 @@ const Login = () => {
               // Profile updated!
               // auth have updated value
               const {uid, email, displayName, photoURL} = auth.currentUser;
+              // update your redux store
               dispatch(
                 addUser({
                   uid: uid,
@@ -79,12 +105,13 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-
+              // then navigate
+              // onAuthStateChange will do this
               navigate("/browse");
             })
             .catch(error => {
               // An error occurred
-              // ...
+              console.log("Error while updating profile");
             });
         })
         .catch(error => {
