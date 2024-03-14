@@ -44,21 +44,28 @@ const Header = () => {
 
   return (
     <>
-      <div className="absolute px-2 md:px-8 py-1 md:py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between">
-        <img src={logo_url} alt="logo" className="w-48 md:w-56 h-18 md:h-24" />
-        {user && (
-          <div className="mt-4">
-            <p className="text-white">{user?.displayName}</p>
-            <FaRegUserCircle className="w-12 h-12 rounded-full fill-white" />
-            <button
-              onClick={handleSignOut}
-              className="font-semibold text-red-600 border-2 border-red-600 rounded-md p-1 m-2"
-            >
-              {" "}
-              Sign Out{" "}
-            </button>
+      <div className="absolute w-full px-2 md:px-8 lg:px-12 items-center py-2 md:py-4 bg-gradient-to-b from-black z-10">
+        <div className="flex justify-between items-center w-full">
+          <img
+            src={logo_url}
+            alt="logo"
+            className="w-24 md:w-32 h-12 md:h-16"
+          />
+          <div>
+            {user && (
+              <div className="flex items-center">
+                <p className="text-white mr-4">{user?.displayName}</p>
+                <FaRegUserCircle className="w-10 h-10 md:w-12 md:h-12 text-white" />
+                <button
+                  onClick={handleSignOut}
+                  className="ml-4 font-semibold text-red-600 border-2 border-red-600 rounded-md py-1 px-4"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </>
   );
