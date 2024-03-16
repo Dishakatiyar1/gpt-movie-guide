@@ -1,11 +1,13 @@
-import {onAuthStateChanged, signOut} from "firebase/auth";
-import React, {useEffect} from "react";
+import {signOut} from "firebase/auth";
+import React from "react";
 import {FaRegUserCircle} from "react-icons/fa";
 import {auth} from "../utils/firebase";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {addUser, removeUser} from "../utils/userSlice";
+import {removeUser} from "../utils/userSlice";
 import {logo_url} from "../utils/constants";
+import {CiSearch} from "react-icons/ci";
+import {toggleGptSearchView} from "../utils/gptSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -42,6 +44,11 @@ const Header = () => {
       });
   };
 
+  const handleGptSearchClick = () => {
+    // GPT Search Click
+    dispatch(toggleGptSearchView());
+  };
+
   return (
     <>
       <div className="absolute w-full px-2 md:px-8 lg:px-12 items-center py-2 md:py-4 bg-gradient-to-b from-black z-10">
@@ -54,6 +61,18 @@ const Header = () => {
           <div>
             {user && (
               <div className="flex items-center">
+                <select className="bg-gray-200 text-black rounded-md px-2 py-2 flex items-center mr-4 outline-none">
+                  <option>English</option>
+                  <option>Hindi</option>
+                  <option>Spanish</option>
+                </select>
+                <button
+                  className="bg-purple-700 text-white rounded-md px-6 py-2 flex items-center hover:bg-opacity-80"
+                  onClick={handleGptSearchClick}
+                >
+                  <CiSearch className="mr-2" />
+                  GPT Search
+                </button>
                 <p className="text-white mr-4">{user?.displayName}</p>
                 <FaRegUserCircle className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 <button

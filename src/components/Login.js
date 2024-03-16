@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import {addUser} from "../utils/userSlice";
 import {useDispatch} from "react-redux";
+import {BACKGROUND_IMG} from "../utils/constants";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -126,11 +127,7 @@ const Login = () => {
     <div className="min-h-screen">
       <Header />
       <div className="absolute w-full min-h-screen">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/93da5c27-be66-427c-8b72-5cb39d275279/94eb5ad7-10d8-4cca-bf45-ac52e0a052c0/IN-en-20240226-popsignuptwoweeks-perspective_alpha_website_medium.jpg"
-          alt="bg-image"
-          className="min-h-screen"
-        />
+        <img src={BACKGROUND_IMG} alt="bg-image" className="min-h-screen" />
       </div>
       <form className="absolute p-8 md:p-16 pb-32 sm:pb-auto bg-black w-full md:w-6/12 lg:w-4/12 h-auto my-36 mx-auto right-0 left-0 rounded-md bg-opacity-95 md:bg-opacity-85">
         <p className="text-2xl text-white font-semibold">
