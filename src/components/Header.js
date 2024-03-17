@@ -5,14 +5,15 @@ import {auth} from "../utils/firebase";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {removeUser} from "../utils/userSlice";
-import {logo_url} from "../utils/constants";
-import {CiSearch} from "react-icons/ci";
+import {SUPPORTED_LANGUAGES, logo_url} from "../utils/constants";
 import {toggleGptSearchView} from "../utils/gptSlice";
+import {chooseLanguage} from "../utils/configSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(store => store.user);
+  const showGptSearch = useSelector(store => store.gpt.showGptSearch);
 
   // Note - navigating here so that only registered user can goto browser page
   // means when user is not null
@@ -49,6 +50,10 @@ const Header = () => {
     dispatch(toggleGptSearchView());
   };
 
+  const handleLanguageChange = e => {
+    dispatch(chooseLanguage(e.target.value));
+  };
+
   return (
     <>
       <div className="absolute w-full px-2 md:px-8 lg:px-12 items-center py-2 md:py-4 bg-gradient-to-b from-black z-10">
@@ -61,17 +66,24 @@ const Header = () => {
           <div>
             {user && (
               <div className="flex items-center">
-                <select className="bg-gray-200 text-black rounded-md px-2 py-2 flex items-center mr-4 outline-none">
-                  <option>English</option>
-                  <option>Hindi</option>
-                  <option>Spanish</option>
-                </select>
+                {showGptSearch && (
+                  <select
+                    className="bg-gray-200 text-black rounded-md px-2 py-2 flex items-center mr-4 outline-none"
+                    onChange={handleLanguageChange}
+                  >
+                    {SUPPORTED_LANGUAGES.map(lang => (
+                      <option value={lang.identifier} key={lang.identifier}>
+                        {lang.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
                 <button
                   className="bg-purple-700 text-white rounded-md px-6 py-2 flex items-center hover:bg-opacity-80"
                   onClick={handleGptSearchClick}
                 >
-                  <CiSearch className="mr-2" />
-                  GPT Search
+                  {showGptSearch ? "Home Page" : "GPT Search"}
                 </button>
                 <p className="text-white mr-4">{user?.displayName}</p>
                 <FaRegUserCircle className="w-10 h-10 md:w-12 md:h-12 text-white" />

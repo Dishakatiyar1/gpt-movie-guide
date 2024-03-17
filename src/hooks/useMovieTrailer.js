@@ -13,7 +13,6 @@ export const useMovieTrailer = movieId => {
     );
 
     const json_data = await data.json();
-    console.log("movie trailer", json_data);
 
     const trailerData = json_data?.results?.filter(
       video => video.type == "Trailer"

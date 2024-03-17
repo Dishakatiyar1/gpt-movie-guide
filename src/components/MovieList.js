@@ -3,7 +3,6 @@ import MovieCard from "./MovieCard";
 import "./../index.css";
 
 const MovieList = ({title, movies}) => {
-  console.log("movies", movies);
   return (
     <div>
       <h1 className="text-3xl py-4 text-white">{title}</h1>

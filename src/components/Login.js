@@ -85,7 +85,6 @@ const Login = () => {
       )
         .then(userCredential => {
           // Signed in
-          // console.log("user creds", userCredential);
           const user = userCredential.user;
           // after sign in - upadate the profile & dispatch action then navigate
 

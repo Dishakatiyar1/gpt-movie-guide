@@ -32,6 +32,7 @@
 - TMDB Image CDN URL
 - Made UI responsive
 - GPT Search Feature
+- Multi-language Feature in our app \*\*\*
 
 # Features
 
