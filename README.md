@@ -33,6 +33,12 @@
 - Made UI responsive
 - GPT Search Feature
 - Multi-language Feature in our app \*\*\*
+- Get OpenAI API Key
+- GPT Search API Call
+- Fetched GPT Movies suggestion from TMDB
+- Memoization
+- Added .env file to gitignore
+- Made Our site responsive
 
 # Features
 

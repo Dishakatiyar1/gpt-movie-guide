@@ -137,20 +137,20 @@ const Login = () => {
             type="text"
             ref={name}
             placeholder="Full Name"
-            className="p-2 mb-2 mt-4 rounded-md outline-none w-full bg-gray-600 text-white"
+            className="p-2 mb-2 mt-4 rounded-md outline-none w-full bg-gray-600 text-white font-semibold"
           />
         )}
         <input
           type="text"
           placeholder="Email Address"
           ref={email}
-          className="p-2 mb-2 mt-4 rounded-md outline-none w-full bg-gray-600 text-white"
+          className="p-2 mb-2 mt-4 rounded-md outline-none w-full bg-gray-600 text-white font-semibold"
         />
         <input
           type="password"
           placeholder="Password"
           ref={password}
-          className="p-2 my-2 rounded-md outline-none w-full bg-gray-600 text-white"
+          className="p-2 my-2 rounded-md outline-none w-full bg-gray-600 text-white font-semibold"
         />
         <p className="text-red-700">{errorMessage}</p>
         <button
