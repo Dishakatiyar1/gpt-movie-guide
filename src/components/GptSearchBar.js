@@ -23,6 +23,7 @@ const GptSearchBar = () => {
       return json_data.results;
     } catch (error) {
       if (error instanceof TypeError && error.message === "Failed to fetch") {
+        alert("Network Error : Please try using Mobile Data");
         console.log(
           "Network error: Check your internet connection or API endpoint."
         );
@@ -67,9 +68,9 @@ const GptSearchBar = () => {
 
   return (
     <>
-      <div className="flex justify-center pt-[10%]">
+      <div className="flex justify-center pt-[25%] sm:pt-[10%]">
         <form
-          className="bg-black grid grid-cols-12 w-1/2 p-4 rounded-md"
+          className="bg-black grid grid-cols-12 w-[90%] sm:w-3/4 md:w-1/2 p-4 rounded-md"
           onSubmit={e => e.preventDefault()}
         >
           <input
@@ -80,7 +81,7 @@ const GptSearchBar = () => {
             placeholder={lang[langKey].gptSearchPlaceholder}
           />
           <button
-            className="bg-red-700 rounded-r-md text-white font-semibold col-span-4"
+            className="bg-red-700 hover:bg-red-900 rounded-r-md text-white font-semibold col-span-4"
             onClick={handleGptSearchClick}
           >
             {lang[langKey].search}

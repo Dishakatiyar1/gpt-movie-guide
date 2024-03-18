@@ -13,7 +13,7 @@
 }
 
 .my-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #af0202;
+  background-color: black;
   border-radius: 10px;
 }
 

@@ -1,6 +1,5 @@
 import {signOut} from "firebase/auth";
-import React from "react";
-import {FaRegUserCircle} from "react-icons/fa";
+import React, {useState} from "react";
 import {auth} from "../utils/firebase";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,12 +7,18 @@ import {removeUser} from "../utils/userSlice";
 import {SUPPORTED_LANGUAGES, logo_url} from "../utils/constants";
 import {toggleGptSearchView} from "../utils/gptSlice";
 import {chooseLanguage} from "../utils/configSlice";
+import {FaArrowDown, FaArrowUp} from "react-icons/fa6";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(store => store.user);
   const showGptSearch = useSelector(store => store.gpt.showGptSearch);
+  const [showSignOut, setShowSignOut] = useState(false);
+
+  const toggleSignOut = () => {
+    setShowSignOut(!showSignOut);
+  };
 
   // Note - navigating here so that only registered user can goto browser page
   // means when user is not null
@@ -68,11 +73,15 @@ const Header = () => {
               <div className="flex items-center">
                 {showGptSearch && (
                   <select
-                    className="bg-gray-200 text-black rounded-md px-2 py-2 flex items-center mr-4 outline-none"
+                    className="bg-gray-800 text-white rounded-md px-2 sm:px-4 py-1 sm:py-2 flex items-center mr-2 sm:mr-4 outline-none text-sm sm:text-lg"
                     onChange={handleLanguageChange}
                   >
                     {SUPPORTED_LANGUAGES.map(lang => (
-                      <option value={lang.identifier} key={lang.identifier}>
+                      <option
+                        value={lang.identifier}
+                        key={lang.identifier}
+                        className="bg-gray-700 hover:bg-gray-600"
+                      >
                         {lang.name}
                       </option>
                     ))}
@@ -80,19 +89,45 @@ const Header = () => {
                 )}
 
                 <button
-                  className="bg-purple-700 text-white rounded-md px-6 py-2 flex items-center hover:bg-opacity-80"
+                  className="bg-purple-700 text-white rounded-md px-4 py-2 flex items-center hover:bg-opacity-80 border-none outline-none focus:outline-none mr-2 sm:mr-6"
                   onClick={handleGptSearchClick}
                 >
-                  {showGptSearch ? "Home Page" : "GPT Search"}
+                  {showGptSearch ? (
+                    <span className="flex items-center">
+                      Home <FaArrowDown className="ml-1" />
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      GPT Search <FaArrowUp className="ml-1" />
+                    </span>
+                  )}
                 </button>
-                <p className="text-white mr-4">{user?.displayName}</p>
-                <FaRegUserCircle className="w-10 h-10 md:w-12 md:h-12 text-white" />
-                <button
-                  onClick={handleSignOut}
-                  className="ml-4 font-semibold text-red-600 border-2 border-red-600 rounded-md py-1 px-4"
-                >
-                  Sign Out
-                </button>
+
+                {/* user icon & signout */}
+                <div className="flex items-center">
+                  <div className="relative">
+                    <div className="relative" onClick={toggleSignOut}>
+                      <div className="flex items-center justify-center w-12 h-12 bg-blue-500 rounded-full text-white font-bold text-lg">
+                        {user?.displayName
+                          ? user.displayName.charAt(0).toUpperCase()
+                          : "D"}
+                      </div>
+                    </div>
+                    {showSignOut && (
+                      <div className="absolute top-10 right-0 bg-gray-800 text-white py-2 px-4 rounded-md shadow">
+                        <p className="text-white mx-auto text-lg text-center">
+                          {user?.displayName}
+                        </p>
+                        <button
+                          onClick={handleSignOut}
+                          className="mt-2 font-semibold text-red-600 border-2 border-red-600 rounded-md py-1 px-2 w-32"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
