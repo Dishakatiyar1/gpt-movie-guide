@@ -8,7 +8,6 @@ import {addGptMoviesResult} from "../utils/gptSlice";
 const GptSearchBar = () => {
   const dispatch = useDispatch();
   const langKey = useSelector(store => store.config.lang);
-
   const searchText = useRef(null);
 
   // Search Movie in TMDB
@@ -34,7 +33,6 @@ const GptSearchBar = () => {
   };
 
   const handleGptSearchClick = async () => {
-    console.log("input text", searchText.current.value);
     // Make an API Call to GPT API and get movie results
 
     const gptQuery =
@@ -53,7 +51,6 @@ const GptSearchBar = () => {
 
     // convert the result string into array of movies
     const gptMovies = gptResult.choices?.[0].message.content.split(", ");
-    console.log(gptMovies);
     // For each movies I will hit TMDB API
 
     const data = gptMovies.map(movie => searchMovieTMDB(movie));
